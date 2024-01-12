@@ -1,0 +1,36 @@
+# Copyright VMware, Inc.
+# SPDX-License-Identifier: APACHE-2.0
+
+version: '2'
+
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=$DB_PASSWORD
+      - MYSQL_DATABASE=$DB_DATABASE
+    ports:
+      - 3306:3306
+  web1:
+    build: .
+    ports:
+      - '8010:8080'
+    environment:
+      - DB_HOST=$DB_HOST
+      - DB_PORT=$DB_PORT
+      - DB_USERNAME=$DB_USERNAME
+      - DB_DATABASE=$DB_DATABASE
+    depends_on:
+      - mysql
+  web2:
+    build: .
+    ports:
+      - '8011:8080'
+    environment:
+      - DB_HOST=$DB_HOST
+      - DB_PORT=$DB_PORT
+      - DB_USERNAME=$DB_USERNAME
+      - DB_DATABASE=$DB_DATABASE
+    depends_on:
+      - mysql
+  
